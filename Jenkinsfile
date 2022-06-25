@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     tools {
@@ -7,15 +8,24 @@ pipeline {
         
         stage('Compile') {
             steps {
-                dir('Servicios/Curso-Microservicios') {
-                    sh 'docker build -t microservicio .'
+                dir("Servicios/Curso-Microservicios"){
+                    sh "docker build -t microservicio ."
                 }
             }
         }
-        stage('Push Image') {
+        // stage('Push Image') {
+        //     steps {
+        //         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker_nexus', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+        //             sh 'docker login [ip de su maquina]:8083 -u $USERNAME -p $PASSWORD'
+        //             sh 'docker tag microservicio:latest [ip de su maquina]:8083/repository/docker-private/microservicio:latest'
+        //             sh 'docker push [ip de su maquina]:8083/repository/docker-private/microservicio:latest'
+        //         }
+        //     }
+        // }
+        stage('Database') {
             steps {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-
+                dir("liquibase/"){
+                    sh '/opt/liquibase/liquibase --changeLogFile="changesets/db.changelog-master.xml" update'
                 }
             }
         }
