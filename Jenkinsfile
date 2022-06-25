@@ -22,12 +22,12 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Database') {
-            steps {
-                dir("liquibase/"){
-                    sh '/opt/liquibase/liquibase --changeLogFile="changesets/db.changelog-master.xml" update'
-                }
-            }
-        }
+        // stage('Database') {
+        //     steps {
+        //         dir("liquibase/"){
+        //             sh '/opt/liquibase/liquibase --changeLogFile="changesets/db.changelog-master.xml" update'
+        //         }
+        //     }
+        // }
     }
 }
